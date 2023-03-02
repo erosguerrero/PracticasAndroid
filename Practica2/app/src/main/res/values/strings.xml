@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GoogleBooksClient</string>
+    <string name="bookFinderLabelString">Escriba el texto a buscar</string>
+    <string name="bookFinderPlaceholder">Autor o título</string>
+    <string name="radioBookText">Libros</string>
+    <string name="radioMagazineText">Revistas</string>
+    <string name="radioBothText">Ambos</string>
+    <string name="findButtonText">Buscar...</string>
 </resources>
