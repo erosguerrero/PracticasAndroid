@@ -34,19 +34,21 @@ public class NetworkUtils {
 
     public static String getBookInfoJson(String queryString, String printType){
 
+        Log.i("Palabra", queryString);
+
         HttpURLConnection urlConnection = null;
         String bookJSONString = null;
-        InputStream inputStream = null;
+        BufferedReader reader = null;
+
 
         Uri uri = Uri.parse(URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, queryString)
-                .appendQueryParameter(MAX, "5")
+                .appendQueryParameter(MAX, "2")
                 .appendQueryParameter(PRINT_TYPE, printType)
                 .appendQueryParameter(KEY, API_KEY)
                 .build();
 
         try{
-
 
             URL requestUrl = new URL(uri.toString());
 
@@ -60,12 +62,24 @@ public class NetworkUtils {
 
             urlConnection.connect();
 
-            inputStream = urlConnection.getInputStream();
+            InputStream inputStream = urlConnection.getInputStream();
 
+            reader = new BufferedReader(new InputStreamReader(inputStream));
 
+            StringBuilder builder = new StringBuilder();
+            String line;
 
-            return convertInputToString(inputStream, 500);
+            while((line = reader.readLine()) != null){
+                builder.append(line);
+                builder.append("\n");
+            }
 
+            if (builder.length() == 0)
+                return null;
+
+            bookJSONString = builder.toString();
+
+            Log.i("ResultadoJSON", bookJSONString);
 
         }
         catch (UnknownHostException e){
@@ -79,7 +93,7 @@ public class NetworkUtils {
         finally {
             try {
                 if (urlConnection != null) urlConnection.disconnect();
-                if (inputStream != null) inputStream.close();
+                if (reader != null) reader.close();
 
             }
             catch (Exception e){
@@ -87,19 +101,10 @@ public class NetworkUtils {
             }
         }
 
-        return null;
+        return bookJSONString;
     }
 
-    public static String convertInputToString(InputStream stream, int len)
-        throws IOException, UnsupportedEncodingException {
-        Log.i("Pepinillo", "dentro de convert");
-        Reader reader = null;
-        reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-        char[] buffer = new char[len];
-        reader.read(buffer);
-        return new String(buffer);
 
-    }
 
 
 
