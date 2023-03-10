@@ -21,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
 
     private final int BOOK_LOADER_ID = 0;
     private ArrayList<BookInfo> mBooksData;
-    private BookLoaderCallbacks bookLoaderCallbacks = new BookLoaderCallbacks(this);
+
+    private BooksResultListAdapter adapter = new BooksResultListAdapter();
+    private BookLoaderCallbacks bookLoaderCallbacks = new BookLoaderCallbacks(this, adapter);
+
+    private RadioGroup grupo;
 
     RecyclerView recycler;
     enum Tipo{LIBRO, REVISTA, AMBOS};
@@ -41,20 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Radio Buttons Config
         tipoSeleccionado = Tipo.AMBOS;
-        RadioGroup grupo = findViewById(R.id.radioGroup);
+        grupo = findViewById(R.id.radioGroup);
         grupo.check(R.id.radioBothButton);
 
         //Recycler view
         recycler = findViewById(R.id.booksmainrecycler);
         recycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
-        mBooksData = new ArrayList<BookInfo>();
-        //False data
-        for (int i = 1; i <= 20; i++) {
-            mBooksData.add(new BookInfo("Libro "+i));
-        }
-        //End false data
-        BooksResultListAdapter adapter = new BooksResultListAdapter();
-        adapter.setBooksData(mBooksData);
+
 
         recycler.setAdapter(adapter);
 
@@ -64,14 +61,16 @@ public class MainActivity extends AppCompatActivity {
     public void searchBooks(View view){
 
         String queryString = ((EditText) findViewById(R.id.bookFinder)).getText().toString();
+        String printType = getPrintType(tipoSeleccionado);
+
+
         Log.i("MAIN","Estoy buscando " + tipoSeleccionado + " "+ queryString);
 
 
         Bundle queryBundle = new Bundle();
         queryBundle.putString(BookLoaderCallbacks.EXTRA_QUERY, queryString);
-        queryBundle.putString(BookLoaderCallbacks.EXTRA_PRINT_TYPE, "books" );
-        LoaderManager.getInstance(this)
-                .restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
+        queryBundle.putString(BookLoaderCallbacks.EXTRA_PRINT_TYPE, printType);
+        LoaderManager.getInstance(this).restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
     }
     public void setType(View view){
         switch(view.getId()) {
@@ -87,6 +86,21 @@ public class MainActivity extends AppCompatActivity {
                 tipoSeleccionado = Tipo.AMBOS;
             }
         }
+    }
+
+    private String getPrintType(Tipo tipo){
+        String tipoString = null;
+        switch (tipo){
+            case LIBRO:
+                tipoString = "books";
+                break;
+            case REVISTA:
+                tipoString = "magazines";
+                break;
+            default:
+                tipoString = "all";
+        }
+        return tipoString;
     }
 
 }

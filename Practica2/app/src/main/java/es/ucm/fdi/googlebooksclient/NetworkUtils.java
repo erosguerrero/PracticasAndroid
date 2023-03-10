@@ -40,10 +40,12 @@ public class NetworkUtils {
         String bookJSONString = null;
         BufferedReader reader = null;
 
+        //inauthor
+        //intitle
 
         Uri uri = Uri.parse(URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, queryString)
-                .appendQueryParameter(MAX, "2")
+                .appendQueryParameter(MAX, "5")
                 .appendQueryParameter(PRINT_TYPE, printType)
                 .appendQueryParameter(KEY, API_KEY)
                 .build();

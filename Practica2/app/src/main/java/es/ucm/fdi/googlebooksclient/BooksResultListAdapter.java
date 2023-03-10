@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultListAdapter.BookViewHolder> {
-    private ArrayList<BookInfo> mBooksData;
+    private ArrayList<BookInfo> mBooksData = new ArrayList<BookInfo>();
 
-    public void setBooksData(List<BookInfo> data){
+    private void setBooksData(List<BookInfo> data){
         mBooksData = (ArrayList<BookInfo>) data;
     }
 
@@ -38,6 +38,11 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
         return mBooksData.size();
     }
 
+    public void updateBooksResultList(List<BookInfo> booksInfo){
+        setBooksData(booksInfo);
+        notifyDataSetChanged();
+    }
+
     public class BookViewHolder extends RecyclerView.ViewHolder {
         TextView item;
 
@@ -47,7 +52,7 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
         }
 
         public void asignarDatos(BookInfo bf){
-            item.setText(bf.title);
+            item.setText(bf.getTitle());
         }
 
     }
