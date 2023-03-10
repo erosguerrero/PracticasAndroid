@@ -13,8 +13,14 @@ import java.util.List;
 
 public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultListAdapter.BookViewHolder> {
     private ArrayList<BookInfo> mBooksData = new ArrayList<BookInfo>();
+    TextView loadingText;
 
-    private void setBooksData(List<BookInfo> data){
+    public void setLoadingTextView(TextView t)
+    {
+        loadingText = t;
+    }
+
+    public void setBooksData(List<BookInfo> data){
         mBooksData = (ArrayList<BookInfo>) data;
     }
 
@@ -40,19 +46,57 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
 
     public void updateBooksResultList(List<BookInfo> booksInfo){
         setBooksData(booksInfo);
+
+        if(booksInfo.size() == 0)
+            loadingText.setText("No se encontraron resultados"); //TODO poner una var para traduccion
+        else
+        loadingText.setText("");
+
+        notifyDataSetChanged();
+    }
+
+    public void restart()
+    {
+        setBooksData(new ArrayList<BookInfo>());
         notifyDataSetChanged();
     }
 
     public class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView item;
+        TextView textTitle;
+        TextView textAut;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            item = itemView.findViewById(R.id.book_text);
+            textTitle = itemView.findViewById(R.id.book_title);
+            textAut = itemView.findViewById(R.id.book_aut);
         }
 
         public void asignarDatos(BookInfo bf){
-            item.setText(bf.getTitle());
+
+            textTitle.setText(bf.getTitle());
+
+            if(bf.getAuthorsList() != null)
+            {
+                if (bf.getAuthorsList().size() == 0)
+                    textAut.setText("Autor anonimo");//TODO usar variable de string para que se traduzca solo
+                else
+                {
+                    List<String> auxListAut = bf.getAuthorsList();
+                    String listAutStr = "";
+                    //metemos autores intermedios separados por comas
+                    for(int i = 0; i < auxListAut.size()-1; i++)
+                    {
+                        listAutStr += auxListAut.get(i) + ", ";
+                    }
+
+                    //metemos ultimo autor (o si solo habia uno) sin coma despues
+                    listAutStr += auxListAut.get(auxListAut.size()-1);
+
+                    textAut.setText(listAutStr);
+                }
+
+            }
+
         }
 
     }

@@ -45,7 +45,7 @@ public class NetworkUtils {
 
         Uri uri = Uri.parse(URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, queryString)
-                .appendQueryParameter(MAX, "5")
+                .appendQueryParameter(MAX, "10")
                 .appendQueryParameter(PRINT_TYPE, printType)
                 .appendQueryParameter(KEY, API_KEY)
                 .build();

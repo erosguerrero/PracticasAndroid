@@ -1,19 +1,21 @@
 package es.ucm.fdi.googlebooksclient;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.loader.app.LoaderManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,11 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
     private final int BOOK_LOADER_ID = 0;
     private ArrayList<BookInfo> mBooksData;
+    private TextView loadingText;
 
     private BooksResultListAdapter adapter = new BooksResultListAdapter();
     private BookLoaderCallbacks bookLoaderCallbacks = new BookLoaderCallbacks(this, adapter);
 
     private RadioGroup grupo;
+
+
 
     RecyclerView recycler;
     enum Tipo{LIBRO, REVISTA, AMBOS};
@@ -35,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //Oculta el teclado por defecto
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         LoaderManager loaderManager = LoaderManager.getInstance(this);
         if(loaderManager.getLoader(BOOK_LOADER_ID) != null){
@@ -52,20 +58,48 @@ public class MainActivity extends AppCompatActivity {
         recycler = findViewById(R.id.booksmainrecycler);
         recycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
 
+        loadingText = findViewById(R.id.loadingText);
+        adapter.setLoadingTextView(loadingText);
+
+
 
         recycler.setAdapter(adapter);
+
+        mBooksData = new ArrayList<>();
+      /*  for(int i = 0; i < 10; i++)
+        {
+            BookInfo b = new BookInfo("Libro " + i);
+            mBooksData.add(b);
+        }
+
+        adapter.updateBooksResultList(mBooksData);*/
 
     }
 
 
     public void searchBooks(View view){
 
-        String queryString = ((EditText) findViewById(R.id.bookFinder)).getText().toString();
+        // oculta el teclado con estas tres lineas
+        ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
+
+      //  adapter.restart();
+
+
+        EditText titleEditText = findViewById(R.id.bookFinderTit);
+        EditText autEditText = findViewById(R.id.bookFinderAut);
+
+
+
+
+        String queryString = titleEditText.getText().toString();
         String printType = getPrintType(tipoSeleccionado);
 
 
         Log.i("MAIN","Estoy buscando " + tipoSeleccionado + " "+ queryString);
-
+        loadingText = findViewById(R.id.loadingText);
+        loadingText.setText("Cargando..."); //TODO poner var para que cambie con el idioma
 
         Bundle queryBundle = new Bundle();
         queryBundle.putString(BookLoaderCallbacks.EXTRA_QUERY, queryString);

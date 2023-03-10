@@ -41,6 +41,9 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
         try{
             JSONObject json = new JSONObject(s);
 
+           if(json.getInt("totalItems") == 0)
+               return new ArrayList<BookInfo>();
+
             JSONArray jBooks = json.getJSONArray("items");
 
             for (int i = 0; i < jBooks.length(); i++){
@@ -51,21 +54,23 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
                 URL url = new URL(jBook.getString("selfLink"));
                 String title = info.getString("title");
                 String authors = null;
+                ArrayList<String> authorList = new ArrayList<>();
 
                 if (info.has("authors")){
 
                     JSONArray jAuthors = info.getJSONArray("authors");
-                    StringBuilder sb = new StringBuilder();
+                    //StringBuilder sb = new StringBuilder();
 
                     for (int j = 0; j < jAuthors.length(); j++){
-                        sb.append(jAuthors.getString(j));
+                        //sb.append(jAuthors.getString(j));
+                        authorList.add(jAuthors.get(j).toString());
                     }
 
 
-                    authors = sb.toString();
+                    //authors = sb.toString();
                 }
 
-                res.add(new BookInfo(title, authors, url));
+                res.add(new BookInfo(title, authorList, url));
 
             }
 

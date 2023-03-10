@@ -2,48 +2,59 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/bookFinder"
+        android:id="@+id/bookFinderTit"
         android:layout_width="346dp"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@color/secondary_color"
         android:ems="10"
-        android:hint="@string/bookFinderPlaceholder"
+        android:hint="@string/bookFinderTitlePlaceholder"
         android:inputType="text"
         android:textAlignment="textStart"
         android:textColor="#807E7E"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookFinderLabel" />
-
-    <TextView
-        android:id="@+id/bookFinderLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/bookFinderLabelString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/bookFinderAut"
+        android:layout_width="346dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/secondary_color"
+        android:ems="10"
+        android:hint="@string/bookFinderAutPlaceholder"
+        android:inputType="text"
+        android:textAlignment="textStart"
+        android:textColor="#807E7E"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookFinderTit" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookFinder">
+        app:layout_constraintTop_toBottomOf="@+id/bookFinderAut">
 
         <RadioButton
             android:id="@+id/radioBookButton"
@@ -51,7 +62,7 @@
             android:layout_height="wrap_content"
             android:onClick="setType"
             android:text="@string/radioBookText"
-            android:textSize="24sp" />
+            android:textSize="20dp" />
 
         <RadioButton
             android:id="@+id/radioMagazineButton"
@@ -59,7 +70,7 @@
             android:layout_height="wrap_content"
             android:onClick="setType"
             android:text="@string/radioMagazineText"
-            android:textSize="24sp" />
+            android:textSize="20dp" />
 
         <RadioButton
             android:id="@+id/radioBothButton"
@@ -67,26 +78,36 @@
             android:layout_height="wrap_content"
             android:onClick="setType"
             android:text="@string/radioBothText"
-            android:textSize="24sp" />
+            android:textSize="20dp" />
     </RadioGroup>
 
     <Button
         android:id="@+id/findButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:onClick="searchBooks"
         android:text="@string/findButtonText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/bookFinderAut" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booksmainrecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="344dp"
+        android:layout_marginTop="200dp"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/findButton"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findButton" />
+
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package es.ucm.fdi.googlebooksclient;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,11 +17,13 @@ public class BookLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<B
     private Context context;
     public static final String EXTRA_QUERY = "queryString";
     public static final String EXTRA_PRINT_TYPE = "printType";
+   // private TextView loadingText;
 
     private BooksResultListAdapter adapter;
     public BookLoaderCallbacks(Context context, BooksResultListAdapter adapter){
         this.context = context;
         this.adapter = adapter;
+       // this.loadingText = loadingText;
     }
 
     @NonNull
@@ -33,6 +36,7 @@ public class BookLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<B
         if (args != null){
             queryString = args.getString(EXTRA_QUERY);
             printType = args.getString(EXTRA_PRINT_TYPE);
+            adapter.restart();
         }
 
         return new BookLoader(context, queryString, printType);
@@ -42,6 +46,9 @@ public class BookLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<B
     public void onLoadFinished(@NonNull Loader<List<BookInfo>> loader, List<BookInfo> data) {
         Log.d("Carga", "Carga completada");
         adapter.updateBooksResultList(data);
+
+
+       // loadingText.setText("");
 
     }
 
