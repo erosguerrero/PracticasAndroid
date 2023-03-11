@@ -31,10 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup grupo;
 
 
-
     RecyclerView recycler;
-    enum Tipo{LIBRO, REVISTA, AMBOS};
-    Tipo tipoSeleccionado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Radio Buttons Config
-        tipoSeleccionado = Tipo.AMBOS;
+
         grupo = findViewById(R.id.radioGroup);
         grupo.check(R.id.radioBothButton);
 
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         recycler.setAdapter(adapter);
 
-        mBooksData = new ArrayList<>();
+        //mBooksData = new ArrayList<>();
       /*  for(int i = 0; i < 10; i++)
         {
             BookInfo b = new BookInfo("Libro " + i);
@@ -94,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         String queryString = titleEditText.getText().toString();
-        String printType = getPrintType(tipoSeleccionado);
+        String printType = getPrintType();
 
 
-        Log.i("MAIN","Estoy buscando " + tipoSeleccionado + " "+ queryString);
+        Log.i("MAIN","Estoy buscando " + printType + " "+ queryString);
         loadingText = findViewById(R.id.loadingText);
         loadingText.setText(R.string.isLoading);
 
@@ -106,35 +104,21 @@ public class MainActivity extends AppCompatActivity {
         queryBundle.putString(BookLoaderCallbacks.EXTRA_PRINT_TYPE, printType);
         LoaderManager.getInstance(this).restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
     }
-    public void setType(View view){
-        switch(view.getId()) {
+
+    private String getPrintType() {
+
+        switch (grupo.getCheckedRadioButtonId()) {
             case R.id.radioBookButton: {
-                tipoSeleccionado = Tipo.LIBRO;
-                break;
+                return "books";
             }
             case R.id.radioMagazineButton: {
-                tipoSeleccionado = Tipo.REVISTA;
-                break;
+                return "magazines";
             }
-            default:{
-                tipoSeleccionado = Tipo.AMBOS;
+            default: {
+                return "all";
             }
         }
     }
 
-    private String getPrintType(Tipo tipo){
-        String tipoString = null;
-        switch (tipo){
-            case LIBRO:
-                tipoString = "books";
-                break;
-            case REVISTA:
-                tipoString = "magazines";
-                break;
-            default:
-                tipoString = "all";
-        }
-        return tipoString;
-    }
 
 }

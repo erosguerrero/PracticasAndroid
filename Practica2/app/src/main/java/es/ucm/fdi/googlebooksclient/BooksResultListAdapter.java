@@ -53,9 +53,9 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
         setBooksData(booksInfo);
 
         if(booksInfo.size() == 0)
-            loadingText.setText("No se encontraron resultados"); //TODO poner una var para traduccion
+            loadingText.setText(R.string.noResultadosText);
         else
-        loadingText.setText("");
+            loadingText.setText(R.string.resultadosText);
 
         notifyDataSetChanged();
     }
@@ -67,14 +67,14 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
     }
 
     public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public View card;
+
         TextView textTitle;
         TextView textAut;
         BookInfo b;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            card = itemView;
+
             itemView.setOnClickListener(this);
         //    itemView.setOnClickListener(onClick(itemView));
             textTitle = itemView.findViewById(R.id.book_title);
@@ -88,7 +88,7 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
             if(bf.getAuthorsList() != null)
             {
                 if (bf.getAuthorsList().size() == 0)
-                    textAut.setText("Autor anonimo");//TODO usar variable de string para que se traduzca solo
+                    textAut.setText(R.string.noAutText);
                 else
                 {
                     List<String> auxListAut = bf.getAuthorsList();
