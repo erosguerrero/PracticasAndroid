@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Google Books App</string>
+    <string name="bookFinderLabelString">Write the text to search</string>
+    <string name="bookFinderTitlePlaceholder">Title</string>
+    <string name="bookFinderAutPlaceholder">Author</string>
+    <string name="radioBookText">Books</string>
+    <string name="radioMagazineText">Magazines</string>
+    <string name="radioBothText">Both</string>
+    <string name="findButtonText">Search</string>
+    <string name="isLoading">Loading results...</string>
+</resources>

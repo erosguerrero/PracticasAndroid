@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("MAIN","Estoy buscando " + tipoSeleccionado + " "+ queryString);
         loadingText = findViewById(R.id.loadingText);
-        loadingText.setText("Cargando..."); //TODO poner var para que cambie con el idioma
+        loadingText.setText(R.string.isLoading);
 
         Bundle queryBundle = new Bundle();
         queryBundle.putString(BookLoaderCallbacks.EXTRA_QUERY, queryString);
