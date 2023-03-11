@@ -1,11 +1,16 @@
 package es.ucm.fdi.googlebooksclient;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ContentFrameLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -61,18 +66,23 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
         notifyDataSetChanged();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder {
+    public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public View card;
         TextView textTitle;
         TextView textAut;
+        BookInfo b;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
+            card = itemView;
+            itemView.setOnClickListener(this);
+        //    itemView.setOnClickListener(onClick(itemView));
             textTitle = itemView.findViewById(R.id.book_title);
             textAut = itemView.findViewById(R.id.book_aut);
         }
 
         public void asignarDatos(BookInfo bf){
-
+            b = bf;
             textTitle.setText(bf.getTitle());
 
             if(bf.getAuthorsList() != null)
@@ -99,6 +109,21 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
 
         }
 
+       @Override
+        public void onClick(View v) {
+
+            Context context = v.getContext();
+            String url = b.getInfoLink().toString();
+           Log.i("BookViewHolder","pulsado un libro con url: " + url);
+            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            intent.putExtra(SearchManager.QUERY, url);
+
+            if(intent.resolveActivity(context.getPackageManager()) != null)
+            {
+                context.startActivity(intent);
+            }
+
+        }
     }
 
 
