@@ -15,7 +15,8 @@ import java.util.List;
 public class BookLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<BookInfo>>{
 
     private Context context;
-    public static final String EXTRA_QUERY = "queryString";
+    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_AUTHOR = "author";
     public static final String EXTRA_PRINT_TYPE = "printType";
    // private TextView loadingText;
 
@@ -30,16 +31,22 @@ public class BookLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<B
     @Override
     public Loader<List<BookInfo>> onCreateLoader(int id, @Nullable Bundle args) {
 
-        String queryString = "";
-        String printType = "";
+        String title = null;
+        String author = null;
+        String printType = null;
 
         if (args != null){
-            queryString = args.getString(EXTRA_QUERY);
+            title = args.getString(EXTRA_TITLE).trim();
+            if (title.equals("")) title = null;
+
+            author = args.getString(EXTRA_AUTHOR).trim();
+            if(author.equals("")) author = null;
+
             printType = args.getString(EXTRA_PRINT_TYPE);
             adapter.restart();
         }
 
-        return new BookLoader(context, queryString, printType);
+        return new BookLoader(context, title, author, printType);
     }
 
     @Override

@@ -32,19 +32,29 @@ public class NetworkUtils {
     private final static String PRINT_TYPE = "printType";
     private final static String KEY = "key";
 
-    public static String getBookInfoJson(String queryString, String printType){
+    private final static String TITLE = "intitle:";
+    private final static String AUTHOR = "inauthor:";
 
-        Log.i("Palabra", queryString);
+    public static String getBookInfoJson(String title, String author, String printType){
 
         HttpURLConnection urlConnection = null;
         String bookJSONString = null;
         BufferedReader reader = null;
 
-        //inauthor
-        //intitle
 
-        Uri uri = Uri.parse(URL).buildUpon()
-                .appendQueryParameter(QUERY_PARAM, queryString)
+        Uri.Builder uriBuilder = Uri.parse(URL).buildUpon();
+
+        if (title != null && author == null){
+            uriBuilder.appendQueryParameter(QUERY_PARAM, TITLE + title);
+        }
+        else if (title == null && author != null){
+            uriBuilder.appendQueryParameter(QUERY_PARAM, AUTHOR + author);
+        }
+        else if (title != null && author != null){
+            uriBuilder.appendQueryParameter(QUERY_PARAM, TITLE + title + " " + AUTHOR + author);
+        }
+
+        Uri uri = uriBuilder
                 .appendQueryParameter(MAX, "10")
                 .appendQueryParameter(PRINT_TYPE, printType)
                 .appendQueryParameter(KEY, API_KEY)

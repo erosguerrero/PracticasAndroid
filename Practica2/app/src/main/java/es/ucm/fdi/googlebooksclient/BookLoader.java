@@ -19,20 +19,27 @@ import java.util.List;
 
 public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 
-    private String queryString;
+    private String title;
     private String printType;
 
-    public BookLoader(Context context, String queryString, String printType) {
+    private String author;
+
+    public BookLoader(Context context, String title, String author, String printType) {
         super(context);
-        this.queryString = queryString;
+        this.title = title;
+        this.author = author;
         this.printType = printType;
     }
 
     @Nullable
     @Override
     public List<BookInfo> loadInBackground() {
-        String json = NetworkUtils.getBookInfoJson(queryString, printType);
-        return fromJsonResponse(json);
+
+        if (title != null || author != null){
+            String json = NetworkUtils.getBookInfoJson(title, author, printType);
+            return fromJsonResponse(json);
+        }
+        else return new ArrayList<BookInfo>();
     }
 
     private static List<BookInfo> fromJsonResponse(String s){
@@ -74,12 +81,15 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 
             }
 
+            Log.i("MAIN", "Terminado de parsear el JSON");
+
         }
         catch(Exception e){
-            Log.e("ParseJSON", "Error al intentar parsear el json de resultados");
-            Log.e("ParseJSON", e.getMessage());
+            Log.e("MAIN", "Error al intentar parsear el json de resultados");
+            Log.e("MAIN", e.getMessage());
             res = null;
         }
+
 
 
         return res;

@@ -91,17 +91,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        String queryString = titleEditText.getText().toString();
+        String title = titleEditText.getText().toString();
+        String author = autEditText.getText().toString();
         String printType = getPrintType();
 
 
-        Log.i("MAIN","Estoy buscando " + printType + " "+ queryString);
+        Log.i("MAIN","Estoy buscando " + printType + " "+ title + " " + author);
+
         loadingText = findViewById(R.id.loadingText);
         loadingText.setText(R.string.isLoading);
 
         Bundle queryBundle = new Bundle();
-        queryBundle.putString(BookLoaderCallbacks.EXTRA_QUERY, queryString);
+        queryBundle.putString(BookLoaderCallbacks.EXTRA_TITLE, title);
+        queryBundle.putString(BookLoaderCallbacks.EXTRA_AUTHOR, author);
         queryBundle.putString(BookLoaderCallbacks.EXTRA_PRINT_TYPE, printType);
+
         LoaderManager.getInstance(this).restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
     }
 
