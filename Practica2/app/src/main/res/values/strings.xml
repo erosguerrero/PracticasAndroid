@@ -7,8 +7,8 @@
     <string name="radioMagazineText">Revistas</string>
     <string name="radioBothText">Ambos</string>
     <string name="findButtonText">Buscar</string>
-    <string name="isLoading">Cargando resultados...</string>
+    <string name="isLoading">Cargando...</string>
     <string name="resultadosText">Resultados</string>
-    <string name="noResultadosText">No se encontraron resultados</string>
+    <string name="noResultadosText">No se han encontrado resultados</string>
     <string name="noAutText">autor anónimo</string>
 </resources>
